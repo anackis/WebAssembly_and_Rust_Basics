@@ -194,31 +194,71 @@
 
 
 
-// --------------------------------------------------------------------------------//
-// Ownership //
-//-----------//
+// // --------------------------------------------------------------------------------//
+// // Ownership //
+// //-----------//
 
+// struct BankAccount {
+//     balance: i32,
+//     verified: bool
+// }
+
+// fn print_balance(account: &BankAccount) {           // & = borrow
+//     println!("{:?}", account.balance);
+// }
+
+// fn print_verified(account: &BankAccount) {          // & = borrow
+//     println!("{:?}", account.verified);
+// }
+
+// fn main() {             // fn same as function in JS
+//     let my_account = BankAccount {
+//         balance : 20,
+//         verified: true
+//     };
+
+//     print_balance(&my_account);         // & = borrow
+//     print_verified(&my_account);         // Error. my_account has been removed.   // & = borrow helps us with error without "&"
+// }
+// // --------------------------------------------------------------------------------//
+
+
+
+// --------------------------------------------------------------------------------//
+// Result //
+//-----------//
 struct BankAccount {
     balance: i32,
     verified: bool
 }
 
-fn print_balance(account: &BankAccount) {           // & = borrow
+fn print_balance(account: &BankAccount) {          
     println!("{:?}", account.balance);
 }
 
-fn print_verified(account: &BankAccount) {          // & = borrow
+fn print_verified(account: &BankAccount) {          
     println!("{:?}", account.verified);
 }
 
-fn main() {             // fn same as function in JS
+fn is_verified(account: &BankAccount) -> Result<bool, bool> {
+    match account.verified {
+        true => Ok(true),
+        false => Err(false)
+    }
+}
+
+fn main() {            
     let my_account = BankAccount {
         balance : 20,
         verified: true
     };
+    let verification_status = is_verified(&my_account)
+        // .unwrap();
+        .expect("Uable to unwrap result.");
 
-    print_balance(&my_account);         // & = borrow
-    print_verified(&my_account);         // Error. my_account has been removed.   // & = borrow helps us with error without "&"
+    print_balance(&my_account);         
+    print_verified(&my_account);   
+    println!("{:?}", verification_status)      
 }
 // --------------------------------------------------------------------------------//
 
